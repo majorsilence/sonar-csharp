@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Threading;
@@ -18,14 +18,14 @@ namespace NSonarQubeAnalyzer
     public class AsyncAwaitIdentifier : DiagnosticAnalyzer
     {
         internal const string DiagnosticId = "AsyncAwaitIdentifier";
-        internal const string Description = "'async' and 'await' should not be used as identifier";
+        internal const string Description = "'Async' and 'Await' should not be used as identifier";
         internal const string MessageFormat = "Rename this identifier.";
         internal const string Category = "SonarQube";
         internal const DiagnosticSeverity Severity = DiagnosticSeverity.Warning;
 
         internal static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Description, MessageFormat, Category, Severity, true);
 
-        private static readonly IImmutableSet<string> ASYNC_OR_AWAIT = ImmutableHashSet.Create(new string[] {"async", "await"});
+        private static readonly IImmutableSet<string> ASYNC_OR_AWAIT = ImmutableHashSet.Create(new string[] { "Async", "Await" });
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
 
