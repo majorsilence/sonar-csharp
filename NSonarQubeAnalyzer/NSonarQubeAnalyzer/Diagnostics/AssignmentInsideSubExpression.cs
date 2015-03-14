@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Threading;
@@ -37,17 +37,18 @@ namespace NSonarQubeAnalyzer
                         c.ReportDiagnostic(Diagnostic.Create(Rule, c.Node.GetLocation()));
                     }
                 },
-                SyntaxKind.SimpleAssignmentExpression,
-                SyntaxKind.AddAssignmentExpression,
-                SyntaxKind.SubtractAssignmentExpression,
-                SyntaxKind.MultiplyAssignmentExpression,
-                SyntaxKind.DivideAssignmentExpression,
-                SyntaxKind.ModuloAssignmentExpression,
-                SyntaxKind.AndAssignmentExpression,
-                SyntaxKind.ExclusiveOrAssignmentExpression,
-                SyntaxKind.OrAssignmentExpression,
-                SyntaxKind.LeftShiftAssignmentExpression,
-                SyntaxKind.RightShiftAssignmentExpression);
+
+                SyntaxKind.SimpleAssignmentStatement,
+                SyntaxKind.AddAssignmentStatement,
+                SyntaxKind.SubtractAssignmentStatement,
+                SyntaxKind.MultiplyAssignmentStatement,
+                SyntaxKind.DivideAssignmentStatement,
+                SyntaxKind.ConcatenateAssignmentStatement,
+                SyntaxKind.ExponentiateAssignmentStatement,
+                SyntaxKind.IntegerDivideAssignmentStatement,
+                SyntaxKind.MidAssignmentStatement,
+                SyntaxKind.LeftShiftAssignmentStatement,
+                SyntaxKind.RightShiftAssignmentStatement);
         }
 
         private static bool IsInSubExpression(SyntaxNode node)
@@ -55,10 +56,8 @@ namespace NSonarQubeAnalyzer
             ExpressionSyntax expression = node.Parent.FirstAncestorOrSelf<ExpressionSyntax>(ancestor => ancestor is ExpressionSyntax);
 
             return expression is ExpressionSyntax &&
-                !expression.IsKind(SyntaxKind.ParenthesizedLambdaExpression) &&
-                !expression.IsKind(SyntaxKind.SimpleLambdaExpression) &&
-                !expression.IsKind(SyntaxKind.AnonymousMethodExpression) &&
-                !expression.IsKind(SyntaxKind.ObjectInitializerExpression);
+                !expression.IsKind(SyntaxKind.MultiLineSubLambdaExpression) &&
+                 !expression.IsKind(SyntaxKind.SingleLineSubLambdaExpression);
         }
     }
 }
